@@ -1,7 +1,7 @@
 package com.ejunior.fisio_api.services;
 
 import com.ejunior.fisio_api.entities.User;
-import com.ejunior.fisio_api.exceptions.ExistingUserException;
+import com.ejunior.fisio_api.exceptions.UserUniqueViolationException;
 import com.ejunior.fisio_api.exceptions.InvalidPasswordException;
 import com.ejunior.fisio_api.exceptions.NotFoundException;
 import com.ejunior.fisio_api.repositories.UserRepository;
@@ -27,7 +27,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return repository.save(user);
         } catch (DataIntegrityViolationException exception){
-            throw new ExistingUserException("Usuário já existe");
+            throw new UserUniqueViolationException("Usuário já existe");
         }
     }
 

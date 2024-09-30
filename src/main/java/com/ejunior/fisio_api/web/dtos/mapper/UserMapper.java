@@ -1,4 +1,4 @@
-package com.ejunior.fisio_api.web.mapper;
+package com.ejunior.fisio_api.web.dtos.mapper;
 
 import com.ejunior.fisio_api.entities.User;
 import com.ejunior.fisio_api.web.dtos.UserCreateDto;

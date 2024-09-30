@@ -1,7 +1,8 @@
 package com.ejunior.fisio_api.web.exceptions;
 
 
-import com.ejunior.fisio_api.exceptions.ExistingUserException;
+import com.ejunior.fisio_api.exceptions.CpfUniqueViolationException;
+import com.ejunior.fisio_api.exceptions.UserUniqueViolationException;
 import com.ejunior.fisio_api.exceptions.InvalidPasswordException;
 import com.ejunior.fisio_api.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,21 +34,21 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<StandardError> notFoundException(HttpServletRequest request,
-                                                           NotFoundException ex){
+                                                           RuntimeException ex){
         StandardError error = new StandardError(request, HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<StandardError> InvalidPasswordException(HttpServletRequest request,
-                                                                  InvalidPasswordException ex){
+                                                                  RuntimeException ex){
         StandardError error = new StandardError(request, HttpStatus.BAD_REQUEST, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(ExistingUserException.class)
+    @ExceptionHandler({UserUniqueViolationException.class, CpfUniqueViolationException.class})
     public ResponseEntity<StandardError> existingUserException(HttpServletRequest request,
-                                                               ExistingUserException ex){
+                                                               RuntimeException ex){
         StandardError error = new StandardError(request, HttpStatus.CONFLICT, ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
