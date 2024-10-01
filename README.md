@@ -9,8 +9,9 @@ Em resumo, o fisioterapeuta ao fim do plantão lança no sistema os atendimentos
 ### Tecnologias utilizadas: 
 
 Até o momento Java, Spring boot, JPA / Hibernate e MySql.
-Foi implementada a classe User com atributos para login e auditoria,  autenticação com Spring Security e JWT token, com perfis ADMIN e FISIO
+Foi implementada a Entidade User com atributos para login e auditoria,  autenticação com Spring Security e JWT token, com perfis ADMIN e FISIO
 Documentação com Spring doc e Swagger. Além disso, teste de integração para garantir o funcionamento correto da aplicação.
+Entidade Fisioterapeuta e seus dtos, service e controller. Supondo que a base de dados seja muito grande, no recurso para listar todos os fisioterapeutas utilizei paginação, para limitar a quantidade de dados retornados em cada requisição e assim diminuindo a carga de processamento e memória no servidor.
 
-Ao decorrer do projeto irei implementar as Classes, Fisioterapeuta, Hospital, Paciente, Atendimento, Fatura e Enum TipoAtendimento com preços fixos para cada tipo.
+Ao decorrer do projeto irei implementar as Classes, Hospital, Paciente, Atendimento, Fatura e TipoAtendimento com preços fixos para cada tipo.
 Ao fim do projeto irei iniciar a aplicação em um container Docker.
