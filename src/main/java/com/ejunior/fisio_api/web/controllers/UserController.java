@@ -48,8 +48,7 @@ public class UserController {
        return ResponseEntity.status(HttpStatus.CREATED).body(new UserResponseDto(user));
    }
 
-    @Operation(summary = "Resource for find user by id",
-            description = "Resource requires a bearer token",
+    @Operation(summary = "Resource for find user by id", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",

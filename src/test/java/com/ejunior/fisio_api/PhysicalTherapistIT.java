@@ -29,7 +29,7 @@ public class PhysicalTherapistIT {
                 .exchange().expectStatus().isCreated().expectBody(PhysicalTherapistResponseDto.class).returnResult().getResponseBody();
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getName()).isEqualTo("Leandro Silva");
+        Assertions.assertThat(response.getName()).isEqualTo("Juvaneide Silva");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class PhysicalTherapistIT {
         StandardError response = testClient.post().uri("/api/v1/physical-therapists")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "juvaneide@email.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new PhysicalTherapistCreateDto("Juvaneide Silva","32771877058"))
+                .bodyValue(new PhysicalTherapistCreateDto("Juvaneide Silva","27343573055"))
                 .exchange().expectStatus().isEqualTo(409).expectBody(StandardError.class)
                 .returnResult().getResponseBody();
 
@@ -109,18 +109,18 @@ public class PhysicalTherapistIT {
 
     @Test
     void findPhysicalTherapist_WhenFindById_ThenReturnPhysicalTherapistAndStatus200(){
-        PhysicalTherapistResponseDto response = testClient.get().uri("/api/v1/physical-therapists/1")
+        PhysicalTherapistResponseDto response = testClient.get().uri("/api/v1/physical-therapists/20")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
                 .exchange().expectStatus().isOk().expectBody(PhysicalTherapistResponseDto.class)
                 .returnResult().getResponseBody();
 
         Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getName()).isEqualTo("Ana maria");
+        Assertions.assertThat(response.getName()).isEqualTo("Maria Silva");
     }
 
     @Test
     void findPhysicalTherapist_WhenFindByIdUserWithoutPermission_ThenReturnExceptionAndStatusCode403(){
-        StandardError response = testClient.get().uri("/api/v1/physical-therapists/1")
+        StandardError response = testClient.get().uri("/api/v1/physical-therapists/20")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "jose@email.com", "123456"))
                 .exchange().expectStatus().isForbidden().expectBody(StandardError.class)
                 .returnResult().getResponseBody();
@@ -191,7 +191,7 @@ public class PhysicalTherapistIT {
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getContent().size()).isEqualTo(1);
-        Assertions.assertThat(response.getTotalPages()).isEqualTo(8);
+        Assertions.assertThat(response.getTotalPages()).isEqualTo(7);
     }
 
     @Test

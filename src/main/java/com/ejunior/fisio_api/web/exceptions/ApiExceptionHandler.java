@@ -28,7 +28,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<StandardError> methodArgumentNotValidException(HttpServletRequest request,
                                                                          MethodArgumentNotValidException ex,
                                                                          BindingResult result){
-        StandardError error = new StandardError(request, HttpStatus.UNPROCESSABLE_ENTITY, "Dados inválidos, digite um formato de email valido e uma senha de 6 a 10 caracteres.", result);
+        StandardError error = new StandardError(request, HttpStatus.UNPROCESSABLE_ENTITY, "Dados invalidos.", result);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
     }
 
