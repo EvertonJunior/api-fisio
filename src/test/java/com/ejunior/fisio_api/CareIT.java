@@ -41,8 +41,8 @@ public class CareIT {
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getCareName()).isEqualTo("Care 3");
 
-        PhysicalTherapist terapist = physicalTherapistService.findById(8);
-        Assertions.assertThat(terapist.getPayment()).isEqualTo(63.00);
+        PhysicalTherapist therapist = physicalTherapistService.findById(8);
+        Assertions.assertThat(therapist.getPayment()).isEqualTo(63.00);
     }
 
     @Test
@@ -289,7 +289,7 @@ public class CareIT {
     }
 
     @Test
-    void deleteCare_WWhenDeleteByIdWithUserWithoutPermission_ThenReturnStandardErrorAndStatusCode403(){
+    void deleteCare_WhenDeleteByIdWithUserWithoutPermission_ThenReturnStandardErrorAndStatusCode403(){
         StandardError response = testClient.delete().uri("/api/v1/cares/40")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "maria@email.com", "123456"))
                 .exchange().expectStatus().isForbidden().expectBody(StandardError.class).returnResult()

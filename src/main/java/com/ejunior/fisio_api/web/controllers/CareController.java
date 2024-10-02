@@ -43,7 +43,7 @@ public class CareController {
     private final CareMapper mapper;
 
 
-    @Operation(summary= "Resource for create new Care, linked to a registered user", description = "Resource requires a bearer token", responses ={
+    @Operation(summary= "Resource for create new Care, linked to a user authenticated", description = "Resource requires a bearer token", responses ={
             @ApiResponse(responseCode = "201", description = "Resource created successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
             @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
