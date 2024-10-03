@@ -36,6 +36,7 @@ public class CareMapper {
     public CareResponseDto careToDto (Care care){
         CareResponseDto careResponseDto = new CareResponseDto();
         careResponseDto.setPhysicalTherapistName(care.getPhysicalTherapist().getName());
+        careResponseDto.setDate(care.getDate());
         careResponseDto.setHospitalName(care.getHospital().getName());
         careResponseDto.setCareName(care.getType().getName());
         careResponseDto.setPatientName(care.getPatient().getName());
