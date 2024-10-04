@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @Operation(summary= "Resource for authenticate User", responses ={
             @ApiResponse(responseCode = "200", description = "Authenticate successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = JwtToken.class))),
             @ApiResponse(responseCode = "400", description = "Invalid credential",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation =  StandardError.class))),
             @ApiResponse(responseCode = "422", description = "Invalid input data",

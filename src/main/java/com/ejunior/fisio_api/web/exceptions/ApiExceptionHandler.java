@@ -1,10 +1,7 @@
 package com.ejunior.fisio_api.web.exceptions;
 
 
-import com.ejunior.fisio_api.exceptions.CpfUniqueViolationException;
-import com.ejunior.fisio_api.exceptions.UserUniqueViolationException;
-import com.ejunior.fisio_api.exceptions.InvalidPasswordException;
-import com.ejunior.fisio_api.exceptions.NotFoundException;
+import com.ejunior.fisio_api.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +43,8 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler({UserUniqueViolationException.class, CpfUniqueViolationException.class})
+    @ExceptionHandler({UserUniqueViolationException.class, CpfUniqueViolationException.class, CnpjUniqueViolantionException.class,
+    CodeUniqueViolationException.class})
     public ResponseEntity<StandardError> existingUserException(HttpServletRequest request,
                                                                RuntimeException ex){
         StandardError error = new StandardError(request, HttpStatus.CONFLICT, ex.getMessage());

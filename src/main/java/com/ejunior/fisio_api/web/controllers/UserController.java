@@ -41,7 +41,7 @@ public class UserController {
            content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))
    })
    @PostMapping
-   @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
    public ResponseEntity<UserResponseDto> create(@Valid @RequestBody UserCreateDto userCreateDto){
         User user = UserMapper.toUserCreateDto(userCreateDto);
         service.create(user);

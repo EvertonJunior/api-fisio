@@ -43,7 +43,9 @@ public class PhysicalTherapistController {
     private final UserService userService;
 
 
-    @Operation(summary= "Resource for create new PhysicalTherapist, linked to a registered user", description = "Resource requires a bearer token", responses ={
+    @Operation(summary= "Resource for create new PhysicalTherapist, linked to a registered user", description = "Resource requires a bearer token",
+            security = @SecurityRequirement(name = "security"),
+            responses ={
             @ApiResponse(responseCode = "201", description = "Resource created successfully",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
             @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
@@ -67,7 +69,7 @@ public class PhysicalTherapistController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "403", description = "Access denied",
@@ -84,7 +86,7 @@ public class PhysicalTherapistController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "403", description = "Access denied",
@@ -115,7 +117,7 @@ public class PhysicalTherapistController {
             },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource find successfully",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))),
                     @ApiResponse(responseCode = "403", description = "Access denied",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping
@@ -130,7 +132,7 @@ public class PhysicalTherapistController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "No content",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "403", description = "Access denied",
@@ -146,7 +148,8 @@ public class PhysicalTherapistController {
     @Operation(summary = "Resource for find details fisio authenticated", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Resource successfully retrieved")})
+                    @ApiResponse(responseCode = "200", description = "Resource find successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class)))})
     @GetMapping("/details")
     @PreAuthorize("hasRole('FISIO')")
     public ResponseEntity<PhysicalTherapistResponseDto> getDetails(@AuthenticationPrincipal JwtUserDetails userDetails){

@@ -43,9 +43,10 @@ public class CareController {
     private final CareMapper mapper;
 
 
-    @Operation(summary= "Resource for create new Care, linked to a user authenticated", description = "Resource requires a bearer token", responses ={
+    @Operation(summary= "Resource for create new Care, with user authenticated", description = "Resource requires a bearer token",
+            security = @SecurityRequirement(name = "security"),responses ={
             @ApiResponse(responseCode = "201", description = "Resource created successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CareResponseDto.class))),
             @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
             @ApiResponse(responseCode = "422", description = "Resource not processed,  invalid input data",
@@ -63,7 +64,7 @@ public class CareController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CareResponseDto.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
@@ -80,7 +81,7 @@ public class CareController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CareResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))
             })
@@ -95,7 +96,7 @@ public class CareController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CareResponseDto.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
@@ -125,7 +126,7 @@ public class CareController {
             },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
@@ -156,7 +157,7 @@ public class CareController {
             },
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PageableDto.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
@@ -175,7 +176,7 @@ public class CareController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Resource successfully deleted",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",

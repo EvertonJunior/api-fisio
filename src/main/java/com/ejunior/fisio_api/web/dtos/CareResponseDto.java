@@ -1,6 +1,7 @@
 package com.ejunior.fisio_api.web.dtos;
 
 import com.ejunior.fisio_api.entities.Care;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.Instant;
 public class CareResponseDto {
 
     private String physicalTherapistName;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
     private Instant date;
     private String hospitalName;
     private String careName;

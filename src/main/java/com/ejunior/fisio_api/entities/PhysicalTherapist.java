@@ -27,7 +27,7 @@ public class PhysicalTherapist implements Serializable {
     @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
-    private Double payment;
+    private Double payment = 0.0;
 
     @OneToOne
     @JoinColumn(name = "id_user")

@@ -30,12 +30,14 @@ public class HospitalController {
 
     private final HospitalService service;
 
-    @Operation(summary= "Resource for create new Hospital", description = "Resource requires a bearer token", responses ={
+    @Operation(summary= "Resource for create new Hospital", description = "Resource requires a bearer token",
+            security = @SecurityRequirement(name = "security"),
+            responses ={
             @ApiResponse(responseCode = "201", description = "Resource created successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapistResponseDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
             @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
-            @ApiResponse(responseCode = "409", description = "Resource not processed, already registered PhysicalTherapist",
+            @ApiResponse(responseCode = "409", description = "Resource not processed, already registered Hospital",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation =  StandardError.class))),
             @ApiResponse(responseCode = "422", description = "Resource not processed,  invalid input data",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))
@@ -44,6 +46,7 @@ public class HospitalController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HospitalResponseDto> create (@RequestBody @Valid HospitalCreateDto dto){
         Hospital hospital = HospitalMapper.toHospital(dto);
+        service.save(hospital);
         return ResponseEntity.status(201).body(HospitalMapper.toDto(hospital));
     }
 
@@ -52,7 +55,7 @@ public class HospitalController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping("/{id}")
@@ -65,7 +68,7 @@ public class HospitalController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping("/cnpj/{cnpj}")
@@ -78,7 +81,7 @@ public class HospitalController {
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping()
@@ -91,8 +94,8 @@ public class HospitalController {
     @Operation(summary = "Resource for delete hospital by id", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Resource successfully deleted",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = PhysicalTherapist.class))),
+                    @ApiResponse(responseCode = "204", description = "Resource successfully deleted",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
                     @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",

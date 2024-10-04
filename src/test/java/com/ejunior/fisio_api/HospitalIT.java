@@ -28,7 +28,7 @@ public class HospitalIT {
     private WebTestClient testClient;
 
     @Test
-    void hospitalCreate_whenCreateWithUserAuthenticated_ThenReturnSavedNewCare() {
+    void hospitalCreate_whenCreateWithUserAuthenticated_ThenReturnSavedNewHospital() {
         HospitalResponseDto response = testClient.post().uri("/api/v1/hospitals")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,6 +87,19 @@ public class HospitalIT {
 
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(403);
+    }
+
+    @Test
+    void hospitalCreate_WhenAlreadyCnpjRegistered_ThenReturnStandardErrorAndStatusCode409(){
+        StandardError response = testClient.post().uri("/api/v1/hospitals")
+                .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new HospitalCreateDto("Santa Marcelina","10169408000145"))
+                .exchange().expectStatus().isEqualTo(409).expectBody(StandardError.class).returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatus()).isEqualTo(409);
     }
 
     @Test
@@ -149,6 +162,7 @@ public class HospitalIT {
         Assertions.assertThat(response.getStatus()).isEqualTo(404);
     }
 
+    @Test
     void findHospital_WhenFindAll_ThenReturnListHospitalsAndStatus200(){
         List<HospitalResponseDto> response = testClient.get().uri("/api/v1/hospitals")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
@@ -175,6 +189,7 @@ public class HospitalIT {
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
                 .exchange().expectStatus().isNoContent();
     }
+
     @Test
     void deleteHospital_WhenDeleteById_ThenReturnForbiddenAndStatusCode403(){
         StandardError response = testClient.delete().uri("/api/v1/hospitals/10")
@@ -185,9 +200,8 @@ public class HospitalIT {
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(403);
     }
-
     @Test
-    void deleteCare_WWhenDeleteByIdWithIdInvalid_ThenReturnNotFoundExceptionAndStatusCode404(){
+    void deleteHospital_WhenDeleteByIdWithIdInvalid_ThenReturnNotFoundExceptionAndStatusCode404(){
         StandardError response = testClient.delete().uri("/api/v1/hospitals/25")
                 .headers(JwtAuthentication.getHeaderAuthorization(testClient, "ana@email.com", "123456"))
                 .exchange().expectStatus().isNotFound().expectBody(StandardError.class).returnResult()

@@ -27,7 +27,7 @@ public class Patient implements Serializable {
     private Long id;
     @Column(nullable = false, length = 100)
     private String name;
-    @Column(unique = true,nullable = false,length = 11)
+    @Column(unique = true, nullable = false,length = 11)
     private String cpf;
     @ManyToOne
     @JoinColumn(name = "id_hospital")

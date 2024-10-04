@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HospitalResponseDto {
 
+    private Long id;
     private String name;
     private String cnpj;
 

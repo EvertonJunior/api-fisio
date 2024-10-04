@@ -15,13 +15,17 @@ import java.util.Objects;
 @Entity
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "cares_types")
+@Table(name = "care_types")
 public class CareType implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false, length = 4)
+    private String code;
+    @Column(nullable = false, length = 100)
     private String name;
+    @Column(nullable = false)
     private Double price;
 
     @CreatedDate

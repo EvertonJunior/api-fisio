@@ -16,10 +16,10 @@ insert into physical_therapists (id, name, cpf, payment, id_user) values (6, 'Ez
 insert into physical_therapists (id, name, cpf, payment, id_user) values (7, 'Ramos Silva', '33213557013', 10.00, 106);
 insert into physical_therapists (id, name, cpf, payment, id_user) values (8, 'Carlos Silva', '25228094075', 60.00, 107);
 
-insert into cares_types (id, name, price) values (20, 'Care 1', 10.00);
-insert into cares_types (id, name, price) values (21, 'Care 2', 20.00);
-insert into cares_types (id, name, price) values (22, 'Care 3', 30.00);
-insert into cares_types (id, name, price) values (23, 'Care 4', 40.00);
+insert into care_types (id, name, code, price) values (20, 'Care 1', 'A-13', 10.00);
+insert into care_types (id, name, code, price) values (21, 'Care 2', 'A-14', 20.00);
+insert into care_types (id, name, code, price) values (22, 'Care 3', 'A-15', 30.00);
+insert into care_types (id, name, code, price) values (23, 'Care 4', 'A-16', 40.00);
 
 insert into hospitals (id, name, cnpj) values (10, 'Santa Casa', '12345678910111');
 insert into hospitals (id, name, cnpj) values (11, 'Santa Marcelina', '12345678910112');
