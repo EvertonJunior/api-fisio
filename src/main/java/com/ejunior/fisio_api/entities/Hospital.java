@@ -26,6 +26,9 @@ public class Hospital implements Serializable {
     @Column(unique = true, nullable = false, length = 14)
     private String cnpj;
 
+    @Embedded
+    private Address address;
+
     @CreatedDate
     @Column(name = "date_creation")
     private LocalDateTime createdDate;

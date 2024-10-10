@@ -1,12 +1,11 @@
 package com.ejunior.fisio_api.web.controllers;
 
-import com.ejunior.fisio_api.entities.Hospital;
-import com.ejunior.fisio_api.entities.PhysicalTherapist;
-import com.ejunior.fisio_api.services.HospitalService;
-import com.ejunior.fisio_api.web.dtos.HospitalCreateDto;
-import com.ejunior.fisio_api.web.dtos.HospitalResponseDto;
-import com.ejunior.fisio_api.web.dtos.PhysicalTherapistResponseDto;
-import com.ejunior.fisio_api.web.dtos.mapper.HospitalMapper;
+import com.ejunior.fisio_api.entities.Invoice;
+import com.ejunior.fisio_api.services.InvoiceService;
+import com.ejunior.fisio_api.services.utils.InvoiceUtil;
+import com.ejunior.fisio_api.web.dtos.InvoiceCreateDto;
+import com.ejunior.fisio_api.web.dtos.InvoiceResponseDto;
+import com.ejunior.fisio_api.web.dtos.mapper.InvoiceMapper;
 import com.ejunior.fisio_api.web.exceptions.StandardError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,76 +21,80 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Hospital endpoint")
-@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/hospitals")
-public class HospitalController {
+@RestController
+@RequestMapping("/api/v1/invoices")
+@Tag(name = "Invoice endpoint")
+public class InvoiceController {
 
-    private final HospitalService service;
+    private final InvoiceService service;
+    private final InvoiceUtil util;
 
-    @Operation(summary= "Resource for create new Hospital", description = "Resource requires a bearer token",
-            security = @SecurityRequirement(name = "security"),
-            responses ={
+    @Operation(summary= "Resource for create new Invoice", description = "Resource requires a bearer token",
+            security = @SecurityRequirement(name = "security"),responses ={
             @ApiResponse(responseCode = "201", description = "Resource created successfully",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceResponseDto.class))),
             @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
-            @ApiResponse(responseCode = "409", description = "Resource not processed, already registered Hospital",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation =  StandardError.class))),
             @ApiResponse(responseCode = "422", description = "Resource not processed,  invalid input data",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))
     })
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<HospitalResponseDto> create (@RequestBody @Valid HospitalCreateDto dto){
-        Hospital hospital = HospitalMapper.toHospital(dto);
-        service.save(hospital);
-        return ResponseEntity.status(201).body(HospitalMapper.toDto(hospital));
+    public ResponseEntity<InvoiceResponseDto> create(@RequestBody @Valid InvoiceCreateDto dto){
+        Invoice invoice = util.createInvoice(dto);
+        service.save(invoice);
+        return ResponseEntity.status(201).body(InvoiceMapper.toDto(invoice));
     }
 
-
-    @Operation(summary = "Resource for find hospital by id", description = "Resource requires a bearer token",
+    @Operation(summary = "Resource for find Invoice by id", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','FISIO')")
-    public ResponseEntity<HospitalResponseDto> findById(@PathVariable long id){
-        return ResponseEntity.ok(HospitalMapper.toDto(service.findById(id)));
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<InvoiceResponseDto> findById(@PathVariable long id){
+        return ResponseEntity.ok(InvoiceMapper.toDto(service.findById(id)));
     }
 
-    @Operation(summary = "Resource for find hospital by cnpj", description = "Resource requires a bearer token",
+    @Operation(summary = "Resource for find invoice by hospital id", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
-    @GetMapping("/cnpj/{cnpj}")
-    @PreAuthorize("hasAnyRole('ADMIN','FISIO')")
-    public ResponseEntity<HospitalResponseDto> findByCnpj(@PathVariable String cnpj){
-        return ResponseEntity.ok(HospitalMapper.toDto(service.findByCnpj(cnpj)));
+    @GetMapping("/hospital/{hospitalId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<InvoiceResponseDto>> findByHospitalId(@PathVariable long hospitalId){
+        List<InvoiceResponseDto> invoices = service.findByHospitalId(hospitalId).stream().map(InvoiceMapper::toDto).toList();
+        return ResponseEntity.ok(invoices);
     }
 
-    @Operation(summary = "Resource for find all hospitals", description = "Resource requires a bearer token",
+    @Operation(summary = "Resource for find all invoices", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "200", description = "Resource successfully retrieved",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = HospitalResponseDto.class))),
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceResponseDto.class))),
+                    @ApiResponse(responseCode = "403", description = "Resource not processed, User without permission",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class))),
                     @ApiResponse(responseCode = "404", description = "Resource not found",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = StandardError.class)))})
     @GetMapping()
-    @PreAuthorize("hasAnyRole('ADMIN','FISIO')")
-    public ResponseEntity<List<HospitalResponseDto>> findAll(){
-        List<HospitalResponseDto> hospitals = service.findAll().stream().map(HospitalMapper::toDto).toList();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<InvoiceResponseDto>> findAll(){
+        List<InvoiceResponseDto> hospitals = service.findAll().stream().map(InvoiceMapper::toDto).toList();
         return ResponseEntity.ok(hospitals);
     }
 
-    @Operation(summary = "Resource for delete hospital by id", description = "Resource requires a bearer token",
+    @Operation(summary = "Resource for delete invoice by id", description = "Resource requires a bearer token",
             security = @SecurityRequirement(name = "security"),
             responses = {
                     @ApiResponse(responseCode = "204", description = "Resource successfully deleted",

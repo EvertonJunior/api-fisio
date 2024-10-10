@@ -1,6 +1,5 @@
 package com.ejunior.fisio_api.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -10,38 +9,36 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "invoices")
 @EntityListeners(AuditingEntityListener.class)
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class Invoice implements Serializable {
+public class SlipPayment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "date_first_care", nullable = false)
-    private LocalDate dateFirstCare;
-    @Column(name = "date_last_care", nullable = false)
-    private LocalDate dateLastCare;
-    @Column(name = "due_date")
-    private LocalDate dueDate = LocalDate.now().plusDays(15);
-    @ManyToOne
-    @JoinColumn(name = "id_hospital")
-    private Hospital hospital;
-    @Column(name = "total_value")
-    private Double totalValue;
-    @Column(unique = true,nullable = false,length = 31)
-    private String code;
-    @OneToOne
-    @JoinColumn(name = "id_slip_payment")
-    private SlipPayment slipPayment;
-    @Column(name = "payment_status")
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus = PaymentStatus.AWAITING_PAYMENT;
+
+    @Column(unique = true, length = 5)
+    private String numeroDocumento;
+    private String nossoNumero;
+    private String numeroBanco = "001";
+    private String numeroAgencia = "452";
+    private String numeroConta = "123873";
+    private String digitoAgencia = "x";
+    private String digitoConta = "5";
+    private String razaoSocialNossaEmpresa = "JE Fisioterpia Ltda.";
+    private String cnpjNossaEmpresa = "10169408000145";
+    @Embedded
+    private Address address;
+    private String numeroContrato = "3128557";
+    private String carteira = "17";
+    private String variacaoCarteira = "35";
+    private String jurosPorcentagem = "1";
+    private String multaPorcentagem = "2";
+
 
     @CreatedDate
     @Column(name = "date_creation")
@@ -56,17 +53,12 @@ public class Invoice implements Serializable {
     @Column(name = "modified_by")
     private String modifiedBy;
 
-    public enum PaymentStatus{
-        AWAITING_PAYMENT,
-        PAID
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id);
+        SlipPayment that = (SlipPayment) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override

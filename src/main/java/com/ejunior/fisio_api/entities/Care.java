@@ -30,7 +30,7 @@ public class Care implements Serializable {
     @GeneratedValue
     private Long id;
     @Column(name = "care_date")
-    private Instant date = Instant.now();
+    private LocalDateTime date = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "id_care_type")
     private CareType type;

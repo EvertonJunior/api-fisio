@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -91,6 +93,11 @@ public class CareService {
        physicalTherapist.setPayment(physicalTherapist.getPayment() - physicalTherapistPayment(care.getPrice()));
        physicalTherapistService.save(physicalTherapist);
        repository.deleteById(id);
+    }
+
+    @Transactional
+    public List<Care> findByDateRangeAndHospitalId(LocalDate initialDAte, LocalDate finalDate, long hospitalId ){
+       return repository.findByDateRangeAndHospitalId(initialDAte.atStartOfDay(), finalDate.atTime(LocalTime.MAX), hospitalId);
     }
 
 }

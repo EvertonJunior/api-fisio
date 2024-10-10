@@ -1,47 +1,43 @@
 package com.ejunior.fisio_api.entities;
 
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "invoices")
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class Invoice implements Serializable {
+public class InvoiceRegistered {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "date_first_care", nullable = false)
-    private LocalDate dateFirstCare;
-    @Column(name = "date_last_care", nullable = false)
-    private LocalDate dateLastCare;
-    @Column(name = "due_date")
-    private LocalDate dueDate = LocalDate.now().plusDays(15);
-    @ManyToOne
-    @JoinColumn(name = "id_hospital")
-    private Hospital hospital;
-    @Column(name = "total_value")
-    private Double totalValue;
-    @Column(unique = true,nullable = false,length = 31)
-    private String code;
+
+    private String linhaDigitavel;
+    private String qrcodeUrl;
+    private String qrcodeEmv;
+
     @OneToOne
-    @JoinColumn(name = "id_slip_payment")
-    private SlipPayment slipPayment;
-    @Column(name = "payment_status")
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus = PaymentStatus.AWAITING_PAYMENT;
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
+    public InvoiceRegistered create(Invoice invoice, String linhaDigitavel, String qrcodeUrl, String qrcodeEmv) {
+        this.linhaDigitavel = linhaDigitavel;
+        this.qrcodeUrl = qrcodeUrl;
+        this.qrcodeEmv = qrcodeEmv;
+        this.invoice = invoice;
+        return this;
+    }
+
 
     @CreatedDate
     @Column(name = "date_creation")
@@ -56,17 +52,12 @@ public class Invoice implements Serializable {
     @Column(name = "modified_by")
     private String modifiedBy;
 
-    public enum PaymentStatus{
-        AWAITING_PAYMENT,
-        PAID
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id);
+        InvoiceRegistered that = (InvoiceRegistered) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
