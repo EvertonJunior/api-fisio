@@ -16,13 +16,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "invoices")
-@EntityListeners(AuditingEntityListener.class)
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class Invoice implements Serializable {
+public class Invoice extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     @Column(name = "date_first_care", nullable = false)
     private LocalDate dateFirstCare;
     @Column(name = "date_last_care", nullable = false)
@@ -43,34 +40,9 @@ public class Invoice implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus = PaymentStatus.AWAITING_PAYMENT;
 
-    @CreatedDate
-    @Column(name = "date_creation")
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(name = "date_modification")
-    private LocalDateTime modifiedDate;
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
     public enum PaymentStatus{
         AWAITING_PAYMENT,
         PAID
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

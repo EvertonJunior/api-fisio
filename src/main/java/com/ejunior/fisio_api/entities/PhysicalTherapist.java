@@ -15,12 +15,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "physical_therapists")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class PhysicalTherapist implements Serializable {
+public class PhysicalTherapist extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     @Column(nullable = false, length = 150)
     private String name;
 
@@ -33,29 +30,4 @@ public class PhysicalTherapist implements Serializable {
     @JoinColumn(name = "id_user")
     private User user;
 
-    @CreatedDate
-    @Column(name = "date_creation")
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(name = "date_modification")
-    private LocalDateTime modifiedDate;
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PhysicalTherapist that = (PhysicalTherapist) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

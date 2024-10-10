@@ -16,8 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_managers")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class Manager implements Serializable {
+public class Manager extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,29 +34,4 @@ public class Manager implements Serializable {
     @JoinColumn(name = "id_user")
     private User user;
 
-    @CreatedDate
-    @Column(name = "date_creation")
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(name = "date_modification")
-    private LocalDateTime modifiedDate;
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Manager manager = (Manager) o;
-        return Objects.equals(id, manager.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

@@ -13,13 +13,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class SlipPayment implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class SlipPayment extends BaseEntity implements Serializable {
 
     @Column(unique = true, length = 5)
     private String numeroDocumento;
@@ -39,30 +34,4 @@ public class SlipPayment implements Serializable {
     private String jurosPorcentagem = "1";
     private String multaPorcentagem = "2";
 
-
-    @CreatedDate
-    @Column(name = "date_creation")
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(name = "date_modification")
-    private LocalDateTime modifiedDate;
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SlipPayment that = (SlipPayment) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }

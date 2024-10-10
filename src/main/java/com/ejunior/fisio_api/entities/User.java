@@ -19,12 +19,8 @@ import java.util.Objects;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "tb_users")
-@EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(name = "username", unique = true, nullable = false, length = 255)
     private String username;
     @Column(name = "password", nullable = false, length = 255)
@@ -33,36 +29,10 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Role role = Role.ROLE_FISIO;
 
-    //Auditoria
-    @CreatedDate
-    @Column(name = "date_creation")
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    @Column(name = "date_modification")
-    private LocalDateTime modifiedDate;
-    @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
-    @LastModifiedBy
-    @Column(name = "modified_by")
-    private String modifiedBy;
-
     public enum Role{
         ROLE_ADMIN,
         ROLE_FISIO
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 
 }
