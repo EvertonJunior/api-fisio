@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.33
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: fisio_api
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3307:3306"
+    networks:
+      - app_network
+
+  java_app:
+    image: api-fisio
+    build: ./api-fisio
+    working_dir: /api-fisio
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fisio_api?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Sao_Paulo
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: admin123
+    command: mvn spring-boot:run
+    depends_on:
+      - mysql
+    networks:
+      - app_network
+
+volumes:
+  mysql_data:
+
+networks:
+  app_network:
+    driver: bridge
