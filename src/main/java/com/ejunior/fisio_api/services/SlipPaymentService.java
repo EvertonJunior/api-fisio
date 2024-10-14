@@ -13,6 +13,7 @@ import com.ejunior.fisio_api.repositories.SlipPaymentRepository;
 import com.ejunior.fisio_api.services.utils.files.SlipPaymentGeneratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,12 +34,14 @@ public class SlipPaymentService {
     private String appKey = "a3e5023a7f80f719ef1cc0e9676020d7";
 
 
+    @Transactional(readOnly = true)
     public byte[] generatePdf(long invoiceId){
         var invoice = invoiceService.findById(invoiceId);
         var slipPayment = generateSlipPayment(invoiceId);
         return generatorService.generate(invoice, slipPayment);
     }
 
+    @Transactional
     public SlipRegistered register(Long invoiceId, SlipPayment slipPayment) {
         Invoice invoice = invoiceService.findById(invoiceId);
         invoice.setSlipPayment(slipPayment);
@@ -54,6 +57,7 @@ public class SlipPaymentService {
         return slipRegistered;
     }
 
+    @Transactional(readOnly = true)
     public InvoiceInput generateSlipPayment(long invoiceId){
         Invoice invoice = invoiceService.findById(invoiceId);
         return create(invoice);
